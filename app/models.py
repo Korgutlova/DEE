@@ -45,6 +45,17 @@ class Role(models.Model):
         return self.name
 
 
+class Interest(models.Model):
+    class Meta:
+        verbose_name = 'Интерес/Пожелание'
+        verbose_name_plural = 'Интересы/Пожелания'
+
+    name = models.CharField(max_length=300, unique=True, verbose_name="Название")
+
+    def __str__(self):
+        return self.name
+
+
 class Student(models.Model):
     class Meta:
         verbose_name = 'Студент'
@@ -55,7 +66,7 @@ class Student(models.Model):
                                        blank=True, null=True, verbose_name="Текущий модуль")
     role = models.OneToOneField(Role, related_name="current_role", on_delete=models.SET_NULL,
                                 blank=True, null=True, verbose_name="Роль/Позиция")
-    interests = models.ManyToManyField(Role, related_name="interests", blank=True, verbose_name="Интересы")
+    interests = models.ManyToManyField(Interest, related_name="interests", blank=True, verbose_name="Интересы")
 
     competences = models.ManyToManyField(Competence, through='StudentCompetence', verbose_name="Компетенции")
 
@@ -74,17 +85,6 @@ class StudentCompetence(models.Model):
 
     def __str__(self):
         return "%s - %s" % (self.student, self.competence)
-
-
-class Interest(models.Model):
-    class Meta:
-        verbose_name = 'Интерес/Пожелание'
-        verbose_name_plural = 'Интересы/Пожелания'
-
-    name = models.CharField(max_length=300, unique=True, verbose_name="Название")
-
-    def __str__(self):
-        return self.name
 
 
 class Content(models.Model):
